@@ -1,0 +1,156 @@
+{
+  "json.schemas": [
+    {
+      "fileMatch": ["revision.json"],
+      "schema": {
+        "type": "object",
+        "description": "Airo Kelvo project revision tracker",
+        "properties": {
+          "project": {
+            "type": "object",
+            "description": "Project metadata",
+            "properties": {
+              "name": { "type": "string" },
+              "description": { "type": "string" },
+              "brand": { "type": "string" },
+              "platform": { "type": "string" },
+              "designLanguage": { "type": "string" },
+              "framework": { "type": "string" },
+              "fontPrimary": { "type": "string" },
+              "fontDisplay": { "type": "string" },
+              "entrypoint": { "type": "string" }
+            }
+          },
+          "revision": {
+            "type": "object",
+            "description": "Current revision info",
+            "properties": {
+              "version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+              "label": { "type": "string" },
+              "date": { "type": "string", "format": "date" },
+              "restoredFrom": { "type": "string" },
+              "manualEdits": { "type": "array", "items": { "type": "string" } }
+            },
+            "required": ["version", "label", "date"]
+          },
+          "history": {
+            "type": "array",
+            "description": "Version history entries",
+            "items": {
+              "type": "object",
+              "properties": {
+                "version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+                "label": { "type": "string" },
+                "status": { "type": "string", "enum": ["current", "previous", "reverted"] },
+                "summary": { "type": "string" }
+              },
+              "required": ["version", "label", "summary"]
+            }
+          },
+          "pending": {
+            "type": "array",
+            "description": "Pending tasks",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": { "type": "string", "pattern": "^PENDING-\\d{3}$" },
+                "priority": { "type": "integer", "minimum": 1 },
+                "label": { "type": "string" },
+                "description": { "type": "string" },
+                "files": { "type": "array", "items": { "type": "string" } },
+                "status": { "type": "string", "enum": ["waiting", "in-progress", "done"] }
+              },
+              "required": ["id", "priority", "label", "status"]
+            }
+          },
+          "screens": { "type": "object" },
+          "context": { "type": "object" },
+          "designTokens": { "type": "object" },
+          "homeGauge": { "type": "object" },
+          "settingsTabs": { "type": "object" },
+          "files": { "type": "object" },
+          "dependencies": { "type": "object" }
+        },
+        "required": ["project", "revision", "history", "pending"]
+      }
+    },
+    {
+      "fileMatch": ["pages.json"],
+      "schema": {
+        "type": "object",
+        "description": "Airo Kelvo page/route mapping",
+        "properties": {
+          "meta": {
+            "type": "object",
+            "description": "Router and layout metadata",
+            "properties": {
+              "project": { "type": "string" },
+              "router": { "type": "string" },
+              "routerFile": { "type": "string" },
+              "layoutFile": { "type": "string" },
+              "viewport": { "type": "string" },
+              "layoutWrapper": { "type": "string" }
+            }
+          },
+          "pages": {
+            "type": "array",
+            "description": "All application pages/routes",
+            "items": {
+              "type": "object",
+              "properties": {
+                "path": { "type": "string", "description": "Route path" },
+                "component": { "type": "string", "description": "React component name" },
+                "file": { "type": "string", "description": "Source file path" },
+                "export": { "type": "string", "enum": ["named", "default"] },
+                "description": { "type": "string" },
+                "category": {
+                  "type": "string",
+                  "enum": ["system", "main", "auth", "settings", "settings-sub", "feature", "feature-sub"]
+                },
+                "navigatesTo": { "type": "array", "items": { "type": "string" } },
+                "navigatesFrom": { "type": "array", "items": { "type": "string" } },
+                "params": {},
+                "queryString": {},
+                "contextDeps": { "type": "array", "items": { "type": "string" } },
+                "features": { "type": "array", "items": { "type": "string" } },
+                "conditions": { "type": "object" },
+                "tabs": { "type": "array" },
+                "popups": { "type": "array", "items": { "type": "string" } }
+              },
+              "required": ["path", "component", "file", "category"]
+            }
+          },
+          "navigationGraph": {
+            "type": "object",
+            "description": "Directed navigation flow map",
+            "properties": {
+              "description": { "type": "string" },
+              "flows": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "object",
+                  "properties": {
+                    "label": { "type": "string" },
+                    "path": { "type": "array", "items": { "type": "string" } },
+                    "trigger": { "type": "string" }
+                  },
+                  "required": ["label", "path", "trigger"]
+                }
+              }
+            }
+          },
+          "categories": {
+            "type": "object",
+            "description": "Pages grouped by category",
+            "additionalProperties": {
+              "type": "array",
+              "items": { "type": "string" }
+            }
+          }
+        },
+        "required": ["meta", "pages", "navigationGraph", "categories"]
+      }
+    }
+  ],
+  "json.schemaDownload.enable": false
+}

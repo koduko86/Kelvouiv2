@@ -1,0 +1,359 @@
+{
+  "meta": {
+    "project": "Airo\u00b0 Kelvo",
+    "router": "react-router v7 (Data mode, createBrowserRouter)",
+    "routerFile": "/src/app/routes.tsx",
+    "layoutFile": "/src/app/RootLayout.tsx",
+    "viewport": "320x480 (portrait, fixed)",
+    "layoutWrapper": "ControllerProvider > ThemeHandler > Outlet"
+  },
+  "pages": [
+    {
+      "path": "/",
+      "component": "BootScreen",
+      "file": "/src/app/screens/BootScreen.tsx",
+      "export": "named",
+      "description": "Animated boot splash with Airo wave logo, auto-navigates to /home after 10s",
+      "category": "system",
+      "navigatesTo": ["/home"],
+      "navigatesFrom": [],
+      "params": null,
+      "queryString": null,
+      "contextDeps": [],
+      "features": [
+        "Wave shift CSS keyframe animations",
+        "SVG logo from /src/imports/svg-qqskaanaam",
+        "Auto-redirect timer (10s)"
+      ]
+    },
+    {
+      "path": "/home",
+      "component": "Home",
+      "file": "/src/app/screens/Home.tsx",
+      "export": "named",
+      "description": "Main thermostat dashboard with arc gauge, mode/fan/swing status bar, action buttons",
+      "category": "main",
+      "navigatesTo": ["/weather", "/parameters", "/schedule", "/password"],
+      "navigatesFrom": ["/", "/screensaver", "/password", "/settings", "/schedule", "/parameters", "/weather"],
+      "params": null,
+      "queryString": null,
+      "contextDeps": ["isOn", "hasError", "isConnected", "cloudConnected", "wifiConnected", "currentTemp", "targetTemp", "mode", "fanSpeed", "swingEnabled", "currentHumidity", "schedulingEnabled", "deviceName"],
+      "features": [
+        "SVG arc temperature gauge (186px, r=86)",
+        "Knob endpoint dot (r=8.4 outer, r=4.2 inner)",
+        "Mode/Fan/Swing status bar (3-col grid)",
+        "Current temp + humidity display",
+        "No Connection state (VRF icon + danger arc)",
+        "OFF/Standby state",
+        "Error state display",
+        "3 action buttons: Weather, Parameters, Schedule",
+        "Header: logo, device name, cloud/wifi/settings icons"
+      ],
+      "conditions": {
+        "!isConnected": "Shows No Connection state with VRF icon",
+        "!isOn": "Shows OFF/Standby in gauge center",
+        "isOn && hasError": "Shows Error label under target temp",
+        "isOn && !hasError": "Shows Target label under target temp"
+      }
+    },
+    {
+      "path": "/password",
+      "component": "Password",
+      "file": "/src/app/screens/Password.tsx",
+      "export": "named",
+      "description": "4-digit PIN entry gate before accessing Settings",
+      "category": "auth",
+      "navigatesTo": ["/settings", "/home", "/change-password"],
+      "navigatesFrom": ["/home"],
+      "params": null,
+      "queryString": null,
+      "contextDeps": ["password"],
+      "features": [
+        "4-digit PIN pad with visual dots",
+        "Password validation against context",
+        "Change Password link",
+        "Back to Home button"
+      ]
+    },
+    {
+      "path": "/change-password",
+      "component": "ChangePassword",
+      "file": "/src/app/screens/ChangePassword.tsx",
+      "export": "named",
+      "description": "Change PIN screen with current/new/confirm flow",
+      "category": "auth",
+      "navigatesTo": ["/password"],
+      "navigatesFrom": ["/password"],
+      "params": null,
+      "queryString": null,
+      "contextDeps": ["password"],
+      "features": [
+        "3-step flow: current PIN, new PIN, confirm PIN",
+        "Auto-redirect to /password on success (1.5s delay)",
+        "Back button to /password"
+      ]
+    },
+    {
+      "path": "/settings",
+      "component": "Settings",
+      "file": "/src/app/screens/Settings.tsx",
+      "export": "named",
+      "description": "6-tab settings panel with horizontally scrollable icon tabs",
+      "category": "settings",
+      "navigatesTo": ["/home", "/wifi", "/pairing"],
+      "navigatesFrom": ["/password"],
+      "params": null,
+      "queryString": null,
+      "contextDeps": [
+        "deviceName", "country", "city", "language",
+        "dhcpEnabled", "ipAddress", "subnetMask", "gateway", "dns", "macAddress",
+        "activeProtocol",
+        "darkTheme", "screenSaverEnabled", "screenTimeout", "radarWakeEnabled",
+        "temperatureUnit", "minTemp", "maxTemp", "schedulingEnabled",
+        "hasError", "isConnected", "cloudConnected", "wifiConnected"
+      ],
+      "tabs": [
+        {
+          "id": "general",
+          "label": "General",
+          "icon": "Settings2",
+          "features": ["Device name edit", "Country/City edit", "Language selector with flag emojis", "Language change confirmation popup"]
+        },
+        {
+          "id": "network",
+          "label": "Network",
+          "icon": "Network",
+          "features": ["WiFi Setup link", "Mobile Pairing link", "DHCP toggle", "IP/Subnet/Gateway/DNS editable fields", "MAC address (read-only)", "IP regex validation"]
+        },
+        {
+          "id": "protocols",
+          "label": "Protocols",
+          "icon": "Cpu",
+          "features": ["Modbus TCP (port 502)", "BACnet IP (port 47808)", "MQTT (port 8883)", "Protocol toggle with colored indicators", "SVG protocol logos from /src/imports"]
+        },
+        {
+          "id": "display",
+          "label": "Display",
+          "icon": "Monitor",
+          "features": ["Dark theme toggle", "Screen saver toggle", "Screen timeout slider (10-120s)", "Radar wake toggle"]
+        },
+        {
+          "id": "climate",
+          "label": "Climate",
+          "icon": "Thermometer",
+          "features": ["Temperature unit (Celsius/Fahrenheit)", "Min/Max temperature range", "Scheduling enable toggle"]
+        },
+        {
+          "id": "developer",
+          "label": "Developer",
+          "icon": "FlaskConical",
+          "features": ["Simulate Error toggle", "Simulate No Connection toggle", "Simulate No Cloud toggle", "Simulate No WiFi toggle"]
+        }
+      ],
+      "popups": [
+        "Language change confirmation dialog"
+      ]
+    },
+    {
+      "path": "/wifi",
+      "component": "WiFiSetup",
+      "file": "/src/app/screens/WiFiSetup.tsx",
+      "export": "named",
+      "description": "WiFi network scanner and connection setup",
+      "category": "settings-sub",
+      "navigatesTo": ["/settings"],
+      "navigatesFrom": ["/settings"],
+      "params": null,
+      "queryString": null,
+      "contextDeps": ["wifiConnected"],
+      "features": [
+        "WiFi network list with signal strength",
+        "Password entry for secured networks",
+        "Connection status feedback",
+        "Back to Settings"
+      ]
+    },
+    {
+      "path": "/pairing",
+      "component": "MobilePairing",
+      "file": "/src/app/screens/MobilePairing.tsx",
+      "export": "named",
+      "description": "QR code based mobile device pairing",
+      "category": "settings-sub",
+      "navigatesTo": ["/settings"],
+      "navigatesFrom": ["/settings"],
+      "params": null,
+      "queryString": null,
+      "contextDeps": ["mobileDevices"],
+      "features": [
+        "QR code generation (qrcode package)",
+        "Paired device list",
+        "Device removal",
+        "Back to Settings"
+      ]
+    },
+    {
+      "path": "/schedule",
+      "component": "Schedule",
+      "file": "/src/app/screens/Schedule.tsx",
+      "export": "named",
+      "description": "Weekly schedule overview with day groups",
+      "category": "feature",
+      "navigatesTo": ["/schedule/entry", "/home"],
+      "navigatesFrom": ["/home", "/schedule/entry"],
+      "params": null,
+      "queryString": null,
+      "contextDeps": ["schedule", "schedulingEnabled"],
+      "features": [
+        "7-day weekly schedule view",
+        "Grouped schedule entries",
+        "Add new entry button",
+        "Navigate to entry editor",
+        "Back to Home"
+      ]
+    },
+    {
+      "path": "/schedule/entry",
+      "component": "ScheduleEntryScreen",
+      "file": "/src/app/screens/ScheduleEntry.tsx",
+      "export": "named",
+      "description": "Individual schedule entry editor (time, temp, mode, fan)",
+      "category": "feature-sub",
+      "navigatesTo": ["/schedule"],
+      "navigatesFrom": ["/schedule"],
+      "params": null,
+      "queryString": {
+        "day": "Day index (0-6)",
+        "entry": "Entry ID (optional, for editing existing)"
+      },
+      "contextDeps": ["schedule"],
+      "features": [
+        "Time picker",
+        "Temperature setting",
+        "Mode selector",
+        "Fan speed selector",
+        "Save/update entry",
+        "Back navigation (navigate(-1))"
+      ]
+    },
+    {
+      "path": "/parameters",
+      "component": "Parameters",
+      "file": "/src/app/screens/Parameters.tsx",
+      "export": "named",
+      "description": "VRF system technical parameters display",
+      "category": "feature",
+      "navigatesTo": ["/home"],
+      "navigatesFrom": ["/home"],
+      "params": null,
+      "queryString": null,
+      "contextDeps": ["isConnected", "mode", "fanSpeed", "currentTemp", "targetTemp"],
+      "features": [
+        "VRF system parameters grid",
+        "Read-only technical data display",
+        "Back to Home"
+      ]
+    },
+    {
+      "path": "/weather",
+      "component": "Weather",
+      "file": "/src/app/screens/Weather.tsx",
+      "export": "named",
+      "description": "Outdoor weather information with condition icons",
+      "category": "feature",
+      "navigatesTo": ["/home"],
+      "navigatesFrom": ["/home"],
+      "params": null,
+      "queryString": null,
+      "contextDeps": ["weatherData", "city", "country", "isConnected"],
+      "features": [
+        "Weather condition icons (sunny, cloudy, rainy, etc.)",
+        "Outdoor temp, humidity, feels like",
+        "Wind speed, UV index, pressure",
+        "City/Country display",
+        "Back to Home"
+      ]
+    },
+    {
+      "path": "/screensaver",
+      "component": "ScreenSaver",
+      "file": "/src/app/screens/ScreenSaver.tsx",
+      "export": "named",
+      "description": "Clock + date + temperature screensaver, tap anywhere to wake",
+      "category": "system",
+      "navigatesTo": ["/home"],
+      "navigatesFrom": [],
+      "params": null,
+      "queryString": null,
+      "contextDeps": ["currentTemp", "city"],
+      "features": [
+        "Real-time clock (HH:MM, 1s interval)",
+        "Day name + full date",
+        "Current temperature display",
+        "City name",
+        "Tap to wake (navigate /home)",
+        "Static gradient orbs background",
+        "White-optimized text for LCD readability"
+      ]
+    }
+  ],
+  "navigationGraph": {
+    "description": "Directed navigation flow between pages",
+    "flows": {
+      "boot": {
+        "label": "Boot Flow",
+        "path": ["/ (BootScreen)", "/home"],
+        "trigger": "Auto (10s timer)"
+      },
+      "settingsAccess": {
+        "label": "Settings Access Flow",
+        "path": ["/home", "/password", "/settings"],
+        "trigger": "Settings icon tap > PIN entry > Settings"
+      },
+      "wifiSetup": {
+        "label": "WiFi Setup Flow",
+        "path": ["/settings (Network tab)", "/wifi", "/settings"],
+        "trigger": "WiFi Setup button in Network tab"
+      },
+      "mobilePairing": {
+        "label": "Mobile Pairing Flow",
+        "path": ["/settings (Network tab)", "/pairing", "/settings"],
+        "trigger": "Mobile Pairing button in Network tab"
+      },
+      "changePassword": {
+        "label": "Change Password Flow",
+        "path": ["/password", "/change-password", "/password"],
+        "trigger": "Change Password link in PIN screen"
+      },
+      "schedule": {
+        "label": "Schedule Management Flow",
+        "path": ["/home", "/schedule", "/schedule/entry", "/schedule"],
+        "trigger": "Schedule action button"
+      },
+      "weather": {
+        "label": "Weather View Flow",
+        "path": ["/home", "/weather", "/home"],
+        "trigger": "Weather action button"
+      },
+      "parameters": {
+        "label": "Parameters View Flow",
+        "path": ["/home", "/parameters", "/home"],
+        "trigger": "Parameters action button"
+      },
+      "screensaver": {
+        "label": "Screensaver Flow",
+        "path": ["/screensaver", "/home"],
+        "trigger": "Tap to wake"
+      }
+    }
+  },
+  "categories": {
+    "system": ["/ (BootScreen)", "/screensaver"],
+    "main": ["/home"],
+    "auth": ["/password", "/change-password"],
+    "settings": ["/settings"],
+    "settings-sub": ["/wifi", "/pairing"],
+    "feature": ["/schedule", "/parameters", "/weather"],
+    "feature-sub": ["/schedule/entry"]
+  }
+}

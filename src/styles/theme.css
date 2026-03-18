@@ -1,0 +1,331 @@
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --font-size: 16px;
+  --font-family-base: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --font-family-display: 'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* ─── Shadcn/UI Tokens (preserved) ─── */
+  --background: #ffffff;
+  --foreground: oklch(0.145 0 0);
+  --card: #ffffff;
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: #030213;
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.95 0.0058 264.53);
+  --secondary-foreground: #030213;
+  --muted: #ececf0;
+  --muted-foreground: #717182;
+  --accent: #e9ebef;
+  --accent-foreground: #030213;
+  --destructive: #d4183d;
+  --destructive-foreground: #ffffff;
+  --border: rgba(0, 0, 0, 0.1);
+  --input: transparent;
+  --input-background: #f3f3f5;
+  --switch-background: #cbced4;
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --radius: 0.625rem;
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: #030213;
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+
+  /* ─── App Surface Tokens ─── */
+  --app-bg: #f5f7fa;
+  --app-header: #edf0f5;
+  --app-panel: #e8ebf0;
+  --app-control: #e3e6ed;
+  --app-hover: #d5d9e2;
+  --app-card: #f0f2f6;
+  --app-input-bg: #f8f9fb;
+  --app-input-disabled: #d5d8e0;
+
+  /* ─── App Text Tokens ─── */
+  --app-text: #0f1419;
+  --app-text-sub: #363d49;
+  --app-text-hint: #6b7585;
+  --app-text-dim: #515b6a;
+  --app-text-label: #272e3a;
+  --app-text-disabled: #a3aab6;
+
+  /* ─── App Line / Border Tokens ─── */
+  --app-line: #c4c9d4;
+  --app-border: #a8aebb;
+
+  /* ─── App Action / Status Tokens ─── */
+  --app-action: #4a94f0;
+  --app-action-hover: #2b6fdb;
+  --app-danger: #dc2626;
+  --app-success: #16a34a;
+  --app-warning: #d97706;
+  --app-info: #2563eb;
+  --app-off: #515b6a;
+
+  /* ─── VRF Mode Colors ─── */
+  --mode-cool: #2563eb;
+  --mode-heat: #ea580c;
+  --mode-fan: #16a34a;
+  --mode-dry: #0891b2;
+  --mode-auto: #515b6a;
+  --mode-auto-bg: #515b6a;
+
+  /* ─── Brand Colors ─── */
+  --brand-cyan: #06B6D4;
+  --brand-sky: #0EA5E9;
+  --brand-blue: #3B82F6;
+  --brand-bg: #0f172b;
+  --brand-text-sub: #62748e;
+
+  /* ─── Gauge / Circle Tokens ─── */
+  --gauge-track: #b0b7c4;
+  --gauge-inner: #eceef2;
+  --gauge-knob: #f0f1f4;
+
+  /* ─── Icon-specific Status Colors ─── */
+  --wifi-on: #16a34a;
+  --wifi-off: #6b7585;
+  --cloud-on: #4a94f0;
+  --sim-error: #ef4444;
+  --sim-disconnect: #f97316;
+  --sim-cloud: #3b82f6;
+  --sim-flask: #f59e0b;
+}
+
+.dark {
+  /* Shadcn/UI Dark Tokens */
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.145 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.145 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.985 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.396 0.141 25.723);
+  --destructive-foreground: oklch(0.637 0.237 25.331);
+  --border: oklch(0.269 0 0);
+  --input: oklch(0.269 0 0);
+  --input-background: #1f2937;
+  --switch-background: #4b5563;
+  --ring: oklch(0.439 0 0);
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(0.269 0 0);
+  --sidebar-ring: oklch(0.439 0 0);
+
+  /* ─── App Surface (Dark) ─── */
+  --app-bg: #030712;
+  --app-header: #111827;
+  --app-panel: #111827;
+  --app-control: #111827;
+  --app-hover: #1f2937;
+  --app-card: #111827;
+  --app-input-bg: #1f2937;
+  --app-input-disabled: #1f2937;
+
+  /* ─── App Text (Dark) ─── */
+  --app-text: #f9fafb;
+  --app-text-sub: #d1d5db;
+  --app-text-hint: #b0b8c4;
+  --app-text-dim: #9ca3af;
+  --app-text-label: #e5e7eb;
+  --app-text-disabled: #6b7280;
+
+  /* ─── App Line / Border (Dark) ─── */
+  --app-line: #374151;
+  --app-border: #4b5563;
+
+  /* ─── Mode Override (Dark) ─── */
+  --mode-auto: #ffffff;
+  --mode-auto-bg: #4b5563;
+
+  /* ─── Gauge (Dark) ─── */
+  --gauge-track: rgba(75,85,99,0.8);
+  --gauge-inner: #111827;
+  --gauge-knob: #1f2937;
+}
+
+@theme inline {
+  /* Shadcn/UI Color Utilities */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-input-background: var(--input-background);
+  --color-switch-background: var(--switch-background);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* ─── App Design Token Utilities ─── */
+  /* Surface: bg-app-bg, bg-app-header, bg-app-panel, bg-app-control, etc. */
+  --color-app-bg: var(--app-bg);
+  --color-app-header: var(--app-header);
+  --color-app-panel: var(--app-panel);
+  --color-app-control: var(--app-control);
+  --color-app-hover: var(--app-hover);
+  --color-app-card: var(--app-card);
+  --color-app-input-bg: var(--app-input-bg);
+  --color-app-input-disabled: var(--app-input-disabled);
+
+  /* Text: text-app-text, text-app-text-sub, etc. */
+  --color-app-text: var(--app-text);
+  --color-app-text-sub: var(--app-text-sub);
+  --color-app-text-hint: var(--app-text-hint);
+  --color-app-text-dim: var(--app-text-dim);
+  --color-app-text-label: var(--app-text-label);
+  --color-app-text-disabled: var(--app-text-disabled);
+
+  /* Lines/Borders: border-app-line, border-app-border */
+  --color-app-line: var(--app-line);
+  --color-app-border: var(--app-border);
+
+  /* Actions: bg-app-action, text-app-danger, etc. */
+  --color-app-action: var(--app-action);
+  --color-app-action-hover: var(--app-action-hover);
+  --color-app-danger: var(--app-danger);
+  --color-app-success: var(--app-success);
+  --color-app-warning: var(--app-warning);
+  --color-app-info: var(--app-info);
+  --color-app-off: var(--app-off);
+
+  /* Mode: bg-mode-cool, text-mode-heat, etc. */
+  --color-mode-cool: var(--mode-cool);
+  --color-mode-heat: var(--mode-heat);
+  --color-mode-fan: var(--mode-fan);
+  --color-mode-dry: var(--mode-dry);
+  --color-mode-auto: var(--mode-auto);
+  --color-mode-auto-bg: var(--mode-auto-bg);
+
+  /* Brand: bg-brand-bg, text-brand-cyan, etc. */
+  --color-brand-cyan: var(--brand-cyan);
+  --color-brand-sky: var(--brand-sky);
+  --color-brand-blue: var(--brand-blue);
+  --color-brand-bg: var(--brand-bg);
+  --color-brand-text-sub: var(--brand-text-sub);
+
+  /* Status icons */
+  --color-wifi-on: var(--wifi-on);
+  --color-wifi-off: var(--wifi-off);
+  --color-cloud-on: var(--cloud-on);
+  --color-sim-error: var(--sim-error);
+  --color-sim-disconnect: var(--sim-disconnect);
+  --color-sim-cloud: var(--sim-cloud);
+  --color-sim-flask: var(--sim-flask);
+
+  /* Font family utility: font-display */
+  --font-family-display: 'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-family-base);
+  }
+
+  html {
+    font-size: var(--font-size);
+    font-family: var(--font-family-base);
+  }
+
+  /* RTL: mirror flex-row layouts */
+  html[dir="rtl"] .flex-row { flex-direction: row-reverse; }
+  html[dir="rtl"] .space-x-2 > :not([hidden]) ~ :not([hidden]) { margin-left: 0; margin-right: 0.5rem; }
+  html[dir="rtl"] .-ml-2 { margin-left: 0; margin-right: -0.5rem; }
+  html[dir="rtl"] .pr-9 { padding-right: 0; padding-left: 2.25rem; }
+  html[dir="rtl"] .text-left { text-align: right; }
+  html[dir="rtl"] .text-right { text-align: left; }
+
+  h1 {
+    font-size: var(--text-2xl);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+    font-family: var(--font-family-display);
+  }
+
+  h2 {
+    font-size: var(--text-xl);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+    font-family: var(--font-family-display);
+  }
+
+  h3 {
+    font-size: var(--text-lg);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+    font-family: var(--font-family-display);
+  }
+
+  h4 {
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+    font-family: var(--font-family-display);
+  }
+
+}
