@@ -95,7 +95,7 @@ export interface ControllerSettings {
   bluetoothEnabled: boolean;
   bluetoothConnected: boolean;
   bmsLicenseValid: boolean;
-  /** VOLATILE: resets to false on page reload / device reboot (not persisted to NVS) */
+  /** VOLATILE: resets to false on page reload */
   developerMode: boolean;
   backgroundStyle: BackgroundStyle;
 }
@@ -198,7 +198,7 @@ const defaultSettings: ControllerSettings = {
     bluetoothEnabled: true,
     bluetoothConnected: false,
     bmsLicenseValid: false,
-    /** VOLATILE: resets to false on page reload / device reboot (not persisted to NVS) */
+    /** VOLATILE: resets to false on page reload */
     developerMode: false,
     backgroundStyle: 'none',
 };
