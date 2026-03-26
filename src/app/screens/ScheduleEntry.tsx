@@ -6,6 +6,7 @@ import { ArrowLeft, Power, PowerOff, Clock, CalendarDays, Thermometer, Gauge } f
 import { Switch } from '../components/ui/switch';
 import { FanSpeedIcon } from '../components/FanSpeedIcon';
 import { displayTemp, tempSuffix } from '../utils/temperature';
+import { SectionLabel } from '../components/SectionLabel';
 
 /** Convert IANA timezone to GMT offset string */
 function formatGMTOffset(tz?: string): string {
@@ -33,15 +34,6 @@ const modeOptions: { id: VRFMode; labelKey: string; cssVar: string }[] = [
 const fanSpeeds: FanSpeed[] = ['off', 'low', 'med', 'high', 'auto'];
 const HOURS = Array.from({ length: 24 }, (_, i) => i.toString().padStart(2, '0'));
 const MINUTES_5 = Array.from({ length: 12 }, (_, i) => (i * 5).toString().padStart(2, '0'));
-
-/* ─── Reusable Section Header (same as Settings/Schedule) ─── */
-function SectionLabel({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="text-[11px] font-semibold tracking-wide text-app-text-hint px-1 mb-2">
-      {children}
-    </div>
-  );
-}
 
 /** "Do not change" toggle pill */
 function KeepToggle({

@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router";
 import { RootLayout } from "./RootLayout";
-import { Home } from "./screens/Home";
+import { Home } from "./screens/Home2";
 import { Password } from "./screens/Password";
 import { ChangePassword } from "./screens/ChangePassword";
 import { Settings } from "./screens/Settings";
@@ -14,6 +14,7 @@ import { ScreenSaver } from "./screens/ScreenSaver";
 import { BootScreen } from "./screens/BootScreen";
 import { FirmwareUpload } from "./screens/FirmwareUpload";
 import { DevPanel } from "./screens/DevPanel";
+import { UIKit } from "./components/ui-kit/UIKit";
 
 export const router = createBrowserRouter([
   {
@@ -74,6 +75,10 @@ export const router = createBrowserRouter([
       {
         path: "/dev",
         Component: DevPanel,
+      },
+      {
+        path: "/ui-kit",
+        Component: UIKit,
       },
     ],
   },

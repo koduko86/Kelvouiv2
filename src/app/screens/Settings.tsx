@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { Switch } from '../components/ui/switch';
 import { Slider } from '../components/ui/slider';
+import { SectionLabel } from '../components/SectionLabel';
 import { SunSnow, Fan, Activity, Footprints, Wind, Gauge } from 'lucide-react';
 
 
@@ -160,9 +161,9 @@ function BgPreview({ bg }: { bg: BackgroundStyle }) {
   if (bg === 'aurora') {
     return (
       <svg width="100%" height="100%" viewBox="0 0 40 60" preserveAspectRatio="none" style={{ background: base }}>
-        <defs><filter id="bp-ab"><feGaussianBlur stdDeviation="8" /></filter></defs>
-        <ellipse cx="10" cy="20" rx="22" ry="18" fill="#60a5fa" opacity="0.3" filter="url(#bp-ab)" />
-        <ellipse cx="32" cy="42" rx="18" ry="14" fill="#a78bfa" opacity="0.25" filter="url(#bp-ab)" />
+        <defs><filter id={`bp-ab-${bg}`}><feGaussianBlur stdDeviation="8" /></filter></defs>
+        <ellipse cx="10" cy="20" rx="22" ry="18" fill="#60a5fa" opacity="0.3" filter={`url(#bp-ab-${bg})`} />
+        <ellipse cx="32" cy="42" rx="18" ry="14" fill="#a78bfa" opacity="0.25" filter={`url(#bp-ab-${bg})`} />
       </svg>
     );
   }
@@ -179,12 +180,12 @@ function BgPreview({ bg }: { bg: BackgroundStyle }) {
     return (
       <svg width="100%" height="100%" viewBox="0 0 40 60" preserveAspectRatio="none" style={{ background: base }}>
         <defs>
-          <radialGradient id="bp-gr" cx="30%" cy="40%" r="70%">
+          <radialGradient id={`bp-gr-${bg}`} cx="30%" cy="40%" r="70%">
             <stop offset="0%" stopColor="#60a5fa" stopOpacity="0.35" />
             <stop offset="100%" stopColor="transparent" stopOpacity="0" />
           </radialGradient>
         </defs>
-        <rect width="40" height="60" fill="url(#bp-gr)" />
+        <rect width="40" height="60" fill={`url(#bp-gr-${bg})`} />
       </svg>
     );
   }
@@ -192,11 +193,11 @@ function BgPreview({ bg }: { bg: BackgroundStyle }) {
     return (
       <svg width="100%" height="100%" viewBox="0 0 40 60" preserveAspectRatio="none" style={{ background: base }}>
         <defs>
-          <pattern id="bp-mp" width="10" height="10" patternUnits="userSpaceOnUse">
+          <pattern id={`bp-mp-${bg}`} width="10" height="10" patternUnits="userSpaceOnUse">
             <path d="M0 0 L10 10 M10 0 L0 10" stroke="#3b82f6" strokeWidth="0.3" opacity="0.15" />
           </pattern>
         </defs>
-        <rect width="40" height="60" fill="url(#bp-mp)" />
+        <rect width="40" height="60" fill={`url(#bp-mp-${bg})`} />
       </svg>
     );
   }
@@ -210,15 +211,7 @@ function BgPreview({ bg }: { bg: BackgroundStyle }) {
   );
 }
 
-/* ─── Reusable Section Header ─── */
 
-function SectionLabel({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="text-[11px] font-semibold tracking-wide text-app-text-hint px-1 mb-2">
-      {children}
-    </div>
-  );
-}
 
 /* ─── Network Field Row (read-only in DHCP, editable in Static) ─── */
 
@@ -1085,18 +1078,22 @@ export function Settings() {
               {(['none', 'aurora', 'waves', 'gradient', 'mesh', 'circles'] as BackgroundStyle[]).map((bg) => (
                 <button
                   key={bg}
+                  type="button"
                   onClick={() => updateSettings({ backgroundStyle: bg })}
-                  className="flex flex-col items-center gap-1 cursor-pointer"
+                  className="flex flex-col items-center gap-1 cursor-pointer relative"
                 >
                   <div
                     className="w-full rounded-lg overflow-hidden border-2 transition-colors"
                     style={{
                       aspectRatio: '2/3',
                       borderColor: settings.backgroundStyle === bg ? 'var(--app-action)' : 'var(--app-line)',
+                      pointerEvents: 'none',
                     }}
                   >
                     <BgPreview bg={bg} />
                   </div>
+                  {/* Invisible click overlay to guarantee tap lands on button */}
+                  <div className="absolute inset-0 z-10" style={{ background: 'transparent' }} />
                   <span className="text-[10px] text-app-text-dim leading-tight">
                     {t(`display.bg_${bg}` as any)}
                   </span>

@@ -21,7 +21,7 @@ export function HomeBackground({ style, dark }: Props) {
 
 /* ─── Aurora: soft colorful blobs ─── */
 function Aurora({ dark }: { dark?: boolean }) {
-  const o = dark ? 0.18 : 0.25;
+  const o = dark ? 0.27 : 0.38;
   return (
     <svg width="100%" height="100%" viewBox="0 0 320 480" preserveAspectRatio="none">
       <defs>
@@ -36,7 +36,7 @@ function Aurora({ dark }: { dark?: boolean }) {
 
 /* ─── Waves: layered flowing curves ─── */
 function Waves({ dark }: { dark?: boolean }) {
-  const o = dark ? 0.12 : 0.18;
+  const o = dark ? 0.18 : 0.28;
   return (
     <svg width="100%" height="100%" viewBox="0 0 320 480" preserveAspectRatio="none">
       <path d="M0 320 Q80 280 160 310 T320 290 V480 H0 Z" fill="#60a5fa" opacity={o} />
@@ -49,7 +49,7 @@ function Waves({ dark }: { dark?: boolean }) {
 
 /* ─── Gradient: elegant radial gradient ─── */
 function Gradient({ dark }: { dark?: boolean }) {
-  const o = dark ? 0.2 : 0.3;
+  const o = dark ? 0.3 : 0.45;
   return (
     <svg width="100%" height="100%" viewBox="0 0 320 480" preserveAspectRatio="none">
       <defs>
@@ -71,7 +71,7 @@ function Gradient({ dark }: { dark?: boolean }) {
 
 /* ─── Mesh: geometric mesh pattern ─── */
 function Mesh({ dark }: { dark?: boolean }) {
-  const o = dark ? 0.08 : 0.12;
+  const o = dark ? 0.12 : 0.18;
   const stroke = dark ? '#60a5fa' : '#3b82f6';
   return (
     <svg width="100%" height="100%" viewBox="0 0 320 480" preserveAspectRatio="none">
@@ -93,7 +93,7 @@ function Mesh({ dark }: { dark?: boolean }) {
 
 /* ─── Circles: concentric soft rings ─── */
 function Circles({ dark }: { dark?: boolean }) {
-  const o = dark ? 0.1 : 0.15;
+  const o = dark ? 0.15 : 0.22;
   const color = '#60a5fa';
   return (
     <svg width="100%" height="100%" viewBox="0 0 320 480" preserveAspectRatio="none">

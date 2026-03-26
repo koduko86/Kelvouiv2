@@ -4,6 +4,7 @@ import { useTranslation } from '../context/i18n';
 import { ArrowLeft, Snowflake, Flame, Fan, Droplet } from 'lucide-react';
 import { FanSpeedIcon } from '../components/FanSpeedIcon';
 import { AutoModeIcon } from '../components/AutoModeIcon';
+import { SectionLabel } from '../components/SectionLabel';
 
 const modes: { id: VRFMode; icon: any; cssVar: string }[] = [
   { id: 'cool', icon: Snowflake, cssVar: 'var(--mode-cool)' },
@@ -14,14 +15,6 @@ const modes: { id: VRFMode; icon: any; cssVar: string }[] = [
 ];
 
 // Swing angles are now dynamic from settings.enabledSwingAngles
-
-function SectionLabel({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="text-[11px] font-semibold tracking-wide text-app-text-hint px-1 mb-2">
-      {children}
-    </div>
-  );
-}
 
 export function Parameters() {
   const { settings, updateSettings } = useController();

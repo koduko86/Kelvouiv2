@@ -5,6 +5,7 @@ import { useTranslation } from '../context/i18n';
 import { ArrowLeft, Plus, Trash2, Edit2, Power, PowerOff, CalendarClock } from 'lucide-react';
 import { Switch } from '../components/ui/switch';
 import { displayTemp, tempSuffix } from '../utils/temperature';
+import { SectionLabel } from '../components/SectionLabel';
 
 const DAY_I18N_KEYS = ['day.mon_short', 'day.tue_short', 'day.wed_short', 'day.thu_short', 'day.fri_short', 'day.sat_short', 'day.sun_short'] as const;
 
@@ -20,15 +21,7 @@ const MODE_CSS_VARS: Record<VRFMode, string> = {
   dry: 'var(--mode-dry)',
 };
 
-/* ─── Reusable Section Header (same as Settings) ─── */
 
-function SectionLabel({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="text-[11px] font-semibold tracking-wide text-app-text-hint px-1 mb-2">
-      {children}
-    </div>
-  );
-}
 
 export function Schedule() {
   const { settings, updateSettings, updateSchedule } = useController();

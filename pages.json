@@ -29,7 +29,7 @@
     {
       "path": "/home",
       "component": "Home",
-      "file": "/src/app/screens/Home.tsx",
+      "file": "/src/app/screens/Home2.tsx",
       "export": "named",
       "description": "Main thermostat dashboard with arc gauge, mode/fan/swing status bar, action buttons",
       "category": "main",
@@ -295,6 +295,42 @@
         "Static gradient orbs background",
         "White-optimized text for LCD readability"
       ]
+    },
+    {
+      "path": "/firmware",
+      "component": "FirmwareUpload",
+      "file": "/src/app/screens/FirmwareUpload.tsx",
+      "export": "named",
+      "description": "OTA firmware upload with progress simulation",
+      "category": "settings-sub",
+      "navigatesTo": ["/settings"],
+      "navigatesFrom": ["/settings"],
+      "contextDeps": [],
+      "features": ["Upload progress bar", "Restart simulation", "Status states: waiting/uploading/completed/restarting"]
+    },
+    {
+      "path": "/dev",
+      "component": "DevPanel",
+      "file": "/src/app/screens/DevPanel.tsx",
+      "export": "named",
+      "description": "Developer debug panel with state simulation and color palette",
+      "category": "system",
+      "navigatesTo": ["/home"],
+      "navigatesFrom": ["/settings"],
+      "contextDeps": ["*"],
+      "features": ["State toggles", "Color token palette", "Plural tester"]
+    },
+    {
+      "path": "/ui-kit",
+      "component": "UIKit",
+      "file": "/src/app/components/ui-kit/UIKit.tsx",
+      "export": "named",
+      "description": "Design system reference page for Figma handoff",
+      "category": "system",
+      "navigatesTo": [],
+      "navigatesFrom": [],
+      "contextDeps": [],
+      "features": ["Token swatches", "Typography scale", "Component gallery", "Screen map", "Background previews"]
     }
   ],
   "navigationGraph": {
@@ -348,11 +384,11 @@
     }
   },
   "categories": {
-    "system": ["/ (BootScreen)", "/screensaver"],
+    "system": ["/ (BootScreen)", "/screensaver", "/dev", "/ui-kit"],
     "main": ["/home"],
     "auth": ["/password", "/change-password"],
     "settings": ["/settings"],
-    "settings-sub": ["/wifi", "/pairing"],
+    "settings-sub": ["/wifi", "/pairing", "/firmware"],
     "feature": ["/schedule", "/parameters", "/weather"],
     "feature-sub": ["/schedule/entry"]
   }
