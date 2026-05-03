@@ -10,6 +10,40 @@ export type BackgroundStyle = 'none' | 'aurora' | 'waves' | 'gradient' | 'mesh' 
 export type SwingSpeed = 'slow' | 'normal' | 'fast';
 export type SwingAngle = 0 | 15 | 30 | 45 | 60 | 75 | 90;
 
+export type HeatSource = 'vrf' | 'relay';
+export type HeatingMode = 'single' | 'two_stage';
+export type Stage2Trigger = 'temp_or_time' | 'temp_and_time';
+export type FanDuringHeating = 'off' | 'stage1' | 'stage2' | 'both';
+export type CirculateModeFan = 'off' | 'low';
+
+export interface AuxHeatConfig {
+  enabled: boolean;
+  heatingMode: HeatingMode;
+  stage1Source: HeatSource;
+  stage2Source: HeatSource;
+  stage2Trigger: Stage2Trigger;
+  tempOffset: number;       // 0.5 / 1.0 / 1.5 / 2.0 / 2.5 / 3.0 °C
+  timeDelayMin: number;     // 5 / 10 / 15 / 30
+  minOnTimeMin: number;     // 5 / 10 / 15 / 30 (>= 10 enforced by UI default)
+  fanDuringHeating: FanDuringHeating;
+  fanDelayOffMin: number;   // 0 / 5 / 10 / 15 (0 = off)
+  circulateModeFan: CirculateModeFan;
+}
+
+export const DEFAULT_AUX_HEAT: AuxHeatConfig = {
+  enabled: false,
+  heatingMode: 'single',
+  stage1Source: 'vrf',
+  stage2Source: 'relay',
+  stage2Trigger: 'temp_or_time',
+  tempOffset: 1.0,
+  timeDelayMin: 10,
+  minOnTimeMin: 10,
+  fanDuringHeating: 'both',
+  fanDelayOffMin: 0,
+  circulateModeFan: 'off',
+};
+
 export interface ScheduleEntry {
   id: string;
   time: string;
@@ -71,6 +105,7 @@ export interface ControllerSettings {
   temperatureUnit: 'celsius' | 'fahrenheit';
   tempStep: 0.5 | 1;
   hysteresis: number;
+  auxHeat: AuxHeatConfig;
   schedulingEnabled: boolean;
   schedule: DaySchedule[];
   mobileDevices: MobileDevice[];
@@ -162,6 +197,19 @@ const defaultSettings: ControllerSettings = {
     temperatureUnit: 'celsius',
     tempStep: 1,
     hysteresis: 0.5,
+    auxHeat: {
+      enabled: false,
+      heatingMode: 'single',
+      stage1Source: 'vrf',
+      stage2Source: 'relay',
+      stage2Trigger: 'temp_or_time',
+      tempOffset: 1.0,
+      timeDelayMin: 10,
+      minOnTimeMin: 10,
+      fanDuringHeating: 'both',
+      fanDelayOffMin: 0,
+      circulateModeFan: 'off',
+    },
     schedulingEnabled: false,
     schedule: defaultSchedule,
     mobileDevices: [

@@ -229,6 +229,21 @@ export function Home() {
   );
 
   const { isConnected, isOn, hasError } = settings;
+  const isDark = settings.darkTheme;
+  const shadowSm = isDark
+    ? "inset 0 1px 0 rgba(255,255,255,0.04), 0 0 0 1px rgba(255,255,255,0.08)"
+    : "0 2px 12px rgba(0,0,0,0.04)";
+  const shadowMd = isDark
+    ? "inset 0 1px 0 rgba(255,255,255,0.05), 0 0 0 1px rgba(255,255,255,0.10)"
+    : "0 4px 24px rgba(0,0,0,0.04)";
+  const shadowLg = isDark
+    ? "inset 0 1px 0 rgba(255,255,255,0.06), 0 0 0 1px rgba(255,255,255,0.12)"
+    : "0 4px 20px rgba(0,0,0,0.06)";
+  const knobShadow = isDark
+    ? "inset 0 1px 0 rgba(255,255,255,0.10), 0 0 0 1px rgba(255,255,255,0.14)"
+    : "inset 0 1px 2px rgba(255,255,255,0.6), 0 2px 12px rgba(0,0,0,0.04)";
+  const actionBg = isDark ? "rgba(125,211,252,0.18)" : "rgba(59,130,246,0.12)";
+  const actionBorder = isDark ? "rgba(125,211,252,0.32)" : "rgba(59,130,246,0.2)";
   const scheduleActive =
     isConnected && settings.schedulingEnabled;
 
@@ -256,24 +271,39 @@ export function Home() {
     <div
       className="h-full flex flex-col overflow-hidden relative"
       style={
-        {
-          "--h2-bg": "#F0F2F6",
-          "--h2-surface": "rgba(255,255,255,0.65)",
-          "--h2-surface-border": "rgba(255,255,255,0.45)",
-          "--h2-text": "#111827",
-          "--h2-text-sub": "#4B5563",
-          "--h2-text-hint": "#6B7280",
-          "--h2-text-dim": "#9CA3AF",
-          "--h2-off": "#9CA3AF",
-          "--h2-track": "#D1D5DB",
-          "--h2-inner": "rgba(255,255,255,0.7)",
-          "--h2-line": "rgba(0,0,0,0.06)",
-          background: "var(--h2-bg)",
-        } as React.CSSProperties
+        (isDark
+          ? {
+              "--h2-bg": "#0B1020",
+              "--h2-surface": "rgba(255,255,255,0.08)",
+              "--h2-surface-border": "rgba(255,255,255,0.16)",
+              "--h2-text": "#F3F4F6",
+              "--h2-text-sub": "#CBD5E1",
+              "--h2-text-hint": "#94A3B8",
+              "--h2-text-dim": "#64748B",
+              "--h2-off": "#94A3B8",
+              "--h2-track": "rgba(255,255,255,0.18)",
+              "--h2-inner": "rgba(255,255,255,0.06)",
+              "--h2-line": "rgba(255,255,255,0.14)",
+              background: "var(--h2-bg)",
+            }
+          : {
+              "--h2-bg": "#F0F2F6",
+              "--h2-surface": "rgba(255,255,255,0.65)",
+              "--h2-surface-border": "rgba(255,255,255,0.45)",
+              "--h2-text": "#111827",
+              "--h2-text-sub": "#4B5563",
+              "--h2-text-hint": "#6B7280",
+              "--h2-text-dim": "#9CA3AF",
+              "--h2-off": "#9CA3AF",
+              "--h2-track": "#D1D5DB",
+              "--h2-inner": "rgba(255,255,255,0.7)",
+              "--h2-line": "rgba(0,0,0,0.06)",
+              background: "var(--h2-bg)",
+            }) as React.CSSProperties
       }
     >
       {/* ── Background style from settings ── */}
-      <HomeBackground style={settings.backgroundStyle} />
+      <HomeBackground style={settings.backgroundStyle} dark={isDark} />
 
       {/* ── Ambient glow based on mode ── */}
       {isConnected && isOn && (
@@ -396,7 +426,7 @@ export function Home() {
                 background: "var(--h2-surface)",
                 border: "1px solid var(--h2-surface-border)",
                 backdropFilter: "blur(12px)",
-                boxShadow: "0 4px 24px rgba(0,0,0,0.04)",
+                boxShadow: shadowMd,
               }}
             >
               <div style={{ width: 64, height: 64 }}>
@@ -478,8 +508,8 @@ export function Home() {
                 }
                 className="mt-4 flex items-center gap-2 px-5 py-2.5 rounded-xl transition-all"
                 style={{
-                  background: "rgba(59,130,246,0.12)",
-                  border: "1px solid rgba(59,130,246,0.2)",
+                  background: actionBg,
+                  border: `1px solid ${actionBorder}`,
                   color: "var(--app-action)",
                 }}
               >
@@ -506,7 +536,7 @@ export function Home() {
                   background: "var(--h2-surface)",
                   border: "1px solid var(--h2-surface-border)",
                   backdropFilter: "blur(10px)",
-                  boxShadow: "0 2px 12px rgba(0,0,0,0.04)",
+                  boxShadow: shadowSm,
                 }}
               >
                 {/* Mode */}
@@ -720,7 +750,7 @@ export function Home() {
                     border:
                       "1px solid var(--h2-surface-border)",
                     boxShadow:
-                      "inset 0 1px 2px rgba(255,255,255,0.6), 0 2px 12px rgba(0,0,0,0.04)",
+                      knobShadow,
                   }}
                 >
                   {!isOn ? (
@@ -844,7 +874,7 @@ export function Home() {
                     border:
                       "1px solid var(--h2-surface-border)",
                     backdropFilter: "blur(10px)",
-                    boxShadow: "0 2px 12px rgba(0,0,0,0.04)",
+                    boxShadow: shadowSm,
                   }}
                 >
                   <div className="flex items-center gap-1.5">
@@ -935,7 +965,7 @@ export function Home() {
             background: "var(--h2-surface)",
             border: "1px solid var(--h2-surface-border)",
             backdropFilter: "blur(12px)",
-            boxShadow: "0 4px 20px rgba(0,0,0,0.06)",
+            boxShadow: shadowLg,
           }}
         >
           <NavItem

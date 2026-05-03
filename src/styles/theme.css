@@ -163,8 +163,12 @@
   --app-text-disabled: #6b7280;
 
   /* ─── App Line / Border (Dark) ─── */
-  --app-line: #374151;
-  --app-border: #4b5563;
+  --app-line: #475569;
+  --app-border: #64748b;
+
+  /* ─── Action (Dark) — brighter for contrast on dark bg ─── */
+  --app-action: #7dd3fc;
+  --app-action-hover: #38bdf8;
 
   /* ─── Mode Override (Dark) ─── */
   --mode-auto: #ffffff;

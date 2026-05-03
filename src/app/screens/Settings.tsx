@@ -1,17 +1,18 @@
 import { useNavigate } from 'react-router';
 import { useState, useRef } from 'react';
-import { useController, Language, type FieldProtocol, type CloudProtocol, type FanSpeed, type BackgroundStyle, type SwingAngle, type SwingSpeed } from '../context/ControllerContext';
+import { useController, DEFAULT_AUX_HEAT, Language, type FieldProtocol, type CloudProtocol, type FanSpeed, type BackgroundStyle, type SwingAngle, type SwingSpeed } from '../context/ControllerContext';
 import { useTranslation, getTranslation } from '../context/i18n';
 import {
   ArrowLeft, Moon, Clock, Radar, Wifi, HouseWifi, WifiOff, Smartphone,
   ChevronRight, Home, MapPin, FlaskConical, AlertTriangle, Unplug,
   CloudOff, Globe, Info, Network, MonitorSmartphone, Pencil, Save, Check,
-  Settings2, Monitor, Cpu, Cloud, ShieldCheck, Bluetooth, Lock, Download, PowerOff, Wallpaper, type LucideIcon
+  Settings2, Monitor, Cpu, Cloud, ShieldCheck, Bluetooth, Lock, Download, PowerOff, Wallpaper, Flame, SlidersHorizontal, type LucideIcon
 } from 'lucide-react';
 import { Switch } from '../components/ui/switch';
 import { Slider } from '../components/ui/slider';
 import { SectionLabel } from '../components/SectionLabel';
 import { SunSnow, Fan, Activity, Footprints, Wind, Gauge } from 'lucide-react';
+import { AuxHeatModal } from '../components/AuxHeatModal';
 
 
 /* ─── Static Data (outside component) ─── */
@@ -345,6 +346,7 @@ export function Settings() {
   const [isEditingNetwork, setIsEditingNetwork] = useState(false);
   const [networkSaved, setNetworkSaved] = useState(false);
   const [pendingCloud, setPendingCloud] = useState(false);
+  const [auxHeatOpen, setAuxHeatOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<SettingsTab>('general');
   const [fwChecking, setFwChecking] = useState(false);
   const [fwUpToDate, setFwUpToDate] = useState(false);
@@ -700,11 +702,13 @@ export function Settings() {
           <div className="bg-app-panel rounded-2xl mb-2.5 overflow-hidden">
             <button
               onClick={() => navigate('/wifi')}
-              className="w-full flex items-center gap-3 px-4 py-3.5 hover:bg-app-hover transition-colors border-b border-app-line"
+              className="w-full flex items-center gap-3 px-4 py-3.5 hover:bg-app-hover active:bg-app-hover transition-colors border-b border-app-line"
             >
-              <Wifi className="w-5 h-5 text-app-text-sub" />
+              <div className="w-8 h-8 rounded-lg bg-app-action/12 flex items-center justify-center shrink-0">
+                <Wifi className="w-4 h-4 text-app-action" />
+              </div>
               <span className="flex-1 text-left font-medium text-app-text text-sm">{t('network.wifi_setup')}</span>
-              <ChevronRight className="w-5 h-5 text-app-text-hint" />
+              <ChevronRight className="w-5 h-5 text-app-action" strokeWidth={2.5} />
             </button>
 
             {/* Bluetooth */}
@@ -750,11 +754,13 @@ export function Settings() {
 
             <button
               onClick={() => navigate('/pairing')}
-              className="w-full flex items-center gap-3 px-4 py-3.5 hover:bg-app-hover transition-colors"
+              className="w-full flex items-center gap-3 px-4 py-3.5 hover:bg-app-hover active:bg-app-hover transition-colors"
             >
-              <Smartphone className="w-5 h-5 text-app-text-sub" />
+              <div className="w-8 h-8 rounded-lg bg-app-action/12 flex items-center justify-center shrink-0">
+                <Smartphone className="w-4 h-4 text-app-action" />
+              </div>
               <span className="flex-1 text-left font-medium text-app-text text-sm">{t('network.mobile_pairing')}</span>
-              <ChevronRight className="w-5 h-5 text-app-text-hint" />
+              <ChevronRight className="w-5 h-5 text-app-action" strokeWidth={2.5} />
             </button>
           </div>
 
@@ -1009,14 +1015,10 @@ export function Settings() {
                   <div className="text-xs text-app-text-dim">{t('display.dark_desc')}</div>
                 </div>
               </div>
-              <div className="flex items-center gap-2">
-                <span className="text-[11px] font-medium text-app-action bg-app-action/10 px-2 py-0.5 rounded-full">{t('display.soon')}</span>
-                <Switch
-                  checked={settings.darkTheme}
-                  onCheckedChange={() => {}}
-                  disabled
-                />
-              </div>
+              <Switch
+                checked={settings.darkTheme}
+                onCheckedChange={(checked) => updateSettings({ darkTheme: checked })}
+              />
             </div>
 
             {/* Screen Saver */}
@@ -1209,7 +1211,7 @@ export function Settings() {
 
           {/* Hysteresis */}
           <div className="bg-app-panel rounded-2xl p-3">
-            <div className="flex items-center gap-2.5 mb-1">
+            <div className="flex items-center gap-2.5 mb-2.5">
               <Activity className="w-4 h-4 text-app-text-sub" />
               <div className="font-medium text-app-text text-sm">{t('climate.hysteresis' as any)}</div>
               <span className="ml-auto font-semibold text-app-action text-sm">&plusmn;{settings.hysteresis}&deg;{tempSuffix(settings.temperatureUnit)}</span>
@@ -1263,6 +1265,37 @@ export function Settings() {
                 </div>
               </div>
             </div>
+          </div>
+
+          {/* Auxiliary Heat Staging */}
+          <div className="bg-app-panel rounded-2xl overflow-hidden">
+            <div className="flex items-center justify-between px-3 py-3">
+              <div className="flex items-center gap-2.5 min-w-0">
+                <Flame className="w-4 h-4 text-app-text-sub shrink-0" />
+                <div className="min-w-0">
+                  <div className="font-medium text-app-text text-sm">{t('aux.title' as any)}</div>
+                  <div className="text-[11px] text-app-text-dim leading-snug mt-0.5">{t('aux.desc' as any)}</div>
+                </div>
+              </div>
+              <Switch
+                checked={settings.auxHeat?.enabled ?? false}
+                onCheckedChange={(checked) =>
+                  updateSettings({ auxHeat: { ...(settings.auxHeat ?? DEFAULT_AUX_HEAT), enabled: checked } })
+                }
+              />
+            </div>
+            {settings.auxHeat?.enabled && (
+              <button
+                onClick={() => setAuxHeatOpen(true)}
+                className="w-full flex items-center gap-3 px-3 py-3 border-t border-app-line hover:bg-app-hover active:bg-app-hover transition-colors"
+              >
+                <div className="w-8 h-8 rounded-lg bg-app-action/15 flex items-center justify-center shrink-0">
+                  <SlidersHorizontal className="w-4 h-4 text-app-action" />
+                </div>
+                <span className="flex-1 text-left font-medium text-app-text text-sm">{t('aux.configure' as any)}</span>
+                <ChevronRight className="w-5 h-5 text-app-action" strokeWidth={2.5} />
+              </button>
+            )}
           </div>
 
           {/* Swing Steps */}
@@ -1398,6 +1431,9 @@ export function Settings() {
       </div>
 
       {/* ─── Popups ─── */}
+
+      {/* Auxiliary Heat Staging Configuration */}
+      <AuxHeatModal open={auxHeatOpen} onClose={() => setAuxHeatOpen(false)} />
 
       {/* Language Change Confirmation */}
       {pendingLang && (
