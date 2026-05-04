@@ -30,10 +30,10 @@ function Seg<T extends string | number>({ options, value, onChange, cols }: SegP
           <button
             key={String(o.value)}
             onClick={() => onChange(o.value)}
-            className={`py-2 px-2 rounded-lg transition-all text-[11px] font-medium ${
+            className={`py-2 px-2 rounded-lg transition-all text-[11px] font-medium border ${
               active
-                ? 'bg-app-action text-white'
-                : 'bg-app-control text-app-text-sub hover:bg-app-hover'
+                ? 'bg-app-action/15 text-app-action border-app-action/40'
+                : 'bg-app-control text-app-text-sub border-app-line hover:bg-app-hover'
             }`}
           >
             {o.label}

@@ -545,7 +545,7 @@ export function Settings() {
                     className={`py-2 px-1 rounded-lg transition-all flex items-center justify-center gap-1.5 text-xs ${
                       isSelected
                         ? 'bg-app-action/15 text-app-action border border-app-action/30 font-semibold'
-                        : 'bg-app-control text-app-text-dim border border-transparent'
+                        : 'bg-app-control text-app-text-sub border border-app-line'
                     }`}
                   >
                     <span className="leading-none">{lang.flag}</span>
@@ -777,8 +777,8 @@ export function Settings() {
                 onClick={() => { updateSettings({ dhcpEnabled: true }); setIsEditingNetwork(false); }}
                 className={`py-2.5 px-3 rounded-xl transition-all flex items-center justify-center gap-2 font-medium text-sm ${
                   settings.dhcpEnabled
-                    ? 'bg-app-action/15 text-app-action border border-app-action/30'
-                    : 'bg-app-control text-app-text-dim border border-transparent'
+                    ? 'bg-app-action/15 text-app-action border border-app-action/40'
+                    : 'bg-app-control text-app-text-sub border border-app-line'
                 }`}
               >
                 {t('network.dhcp')}
@@ -787,8 +787,8 @@ export function Settings() {
                 onClick={() => updateSettings({ dhcpEnabled: false })}
                 className={`py-2.5 px-3 rounded-xl transition-all flex items-center justify-center gap-2 font-medium text-sm ${
                   !settings.dhcpEnabled
-                    ? 'bg-app-action/15 text-app-action border border-app-action/30'
-                    : 'bg-app-control text-app-text-dim border border-transparent'
+                    ? 'bg-app-action/15 text-app-action border border-app-action/40'
+                    : 'bg-app-control text-app-text-sub border border-app-line'
                 }`}
               >
                 {t('network.static_ip')}
@@ -1122,8 +1122,8 @@ export function Settings() {
                 onClick={() => updateSettings({ temperatureUnit: 'celsius' })}
                 className={`py-2 px-3 rounded-lg transition-all flex items-center justify-center gap-1.5 font-medium text-sm ${
                   settings.temperatureUnit === 'celsius'
-                    ? 'bg-app-action/15 text-app-action border border-app-action/30'
-                    : 'bg-app-control text-app-text-dim border border-transparent'
+                    ? 'bg-app-action/15 text-app-action border border-app-action/40'
+                    : 'bg-app-control text-app-text-sub border border-app-line'
                 }`}
               >
                 &deg;C
@@ -1132,8 +1132,8 @@ export function Settings() {
                 onClick={() => updateSettings({ temperatureUnit: 'fahrenheit' })}
                 className={`py-2 px-3 rounded-lg transition-all flex items-center justify-center gap-1.5 font-medium text-sm ${
                   settings.temperatureUnit === 'fahrenheit'
-                    ? 'bg-app-action/15 text-app-action border border-app-action/30'
-                    : 'bg-app-control text-app-text-dim border border-transparent'
+                    ? 'bg-app-action/15 text-app-action border border-app-action/40'
+                    : 'bg-app-control text-app-text-sub border border-app-line'
                 }`}
               >
                 &deg;F
@@ -1152,8 +1152,8 @@ export function Settings() {
                 onClick={() => updateSettings({ tempStep: 0.5 })}
                 className={`py-2 px-3 rounded-lg transition-all flex items-center justify-center gap-1.5 font-medium text-sm ${
                   settings.tempStep === 0.5
-                    ? 'bg-app-action/15 text-app-action border border-app-action/30'
-                    : 'bg-app-control text-app-text-dim border border-transparent'
+                    ? 'bg-app-action/15 text-app-action border border-app-action/40'
+                    : 'bg-app-control text-app-text-sub border border-app-line'
                 }`}
               >
                 0.5&deg;
@@ -1162,8 +1162,8 @@ export function Settings() {
                 onClick={() => updateSettings({ tempStep: 1 })}
                 className={`py-2 px-3 rounded-lg transition-all flex items-center justify-center gap-1.5 font-medium text-sm ${
                   settings.tempStep === 1
-                    ? 'bg-app-action/15 text-app-action border border-app-action/30'
-                    : 'bg-app-control text-app-text-dim border border-transparent'
+                    ? 'bg-app-action/15 text-app-action border border-app-action/40'
+                    : 'bg-app-control text-app-text-sub border border-app-line'
                 }`}
               >
                 1&deg;
@@ -1243,7 +1243,7 @@ export function Settings() {
                   return (
                     <>
                       {/* dead band area */}
-                      <div className="absolute top-0 bottom-0 bg-app-action/15 border-x border-app-action/30" style={{ left: `${loP}%`, width: `${hiP - loP}%` }} />
+                      <div className="absolute top-0 bottom-0 bg-app-action/25 border-x border-app-action/50" style={{ left: `${loP}%`, width: `${hiP - loP}%` }} />
                       {/* setpoint marker */}
                       <div className="absolute top-0 bottom-0 w-0.5 bg-app-action" style={{ left: `${tP}%` }} />
                     </>
@@ -1329,8 +1329,8 @@ export function Settings() {
                       isMandatory
                         ? 'bg-app-action/15 text-app-action border border-app-action/30 opacity-70'
                         : isEnabled
-                          ? 'bg-app-action/15 text-app-action border border-app-action/30'
-                          : 'bg-app-control text-app-text-dim border border-transparent'
+                          ? 'bg-app-action/15 text-app-action border border-app-action/40'
+                          : 'bg-app-control text-app-text-sub border border-app-line'
                     }`}
                   >
                     {angle}&deg;
@@ -1354,8 +1354,8 @@ export function Settings() {
                   onClick={() => updateSettings({ swingSpeed: speed })}
                   className={`py-2 px-2 rounded-lg transition-all text-[11px] font-medium ${
                     settings.swingSpeed === speed
-                      ? 'bg-app-action/15 text-app-action border border-app-action/30'
-                      : 'bg-app-control text-app-text-dim border border-transparent'
+                      ? 'bg-app-action/15 text-app-action border border-app-action/40'
+                      : 'bg-app-control text-app-text-sub border border-app-line'
                   }`}
                 >
                   {t(`climate.speed_${speed}` as any)}
@@ -1413,8 +1413,8 @@ export function Settings() {
                       isMandatory
                         ? 'bg-app-action/15 text-app-action border border-app-action/30 opacity-70'
                         : isEnabled
-                          ? 'bg-app-action/15 text-app-action border border-app-action/30'
-                          : 'bg-app-control text-app-text-dim border border-transparent'
+                          ? 'bg-app-action/15 text-app-action border border-app-action/40'
+                          : 'bg-app-control text-app-text-sub border border-app-line'
                     }`}
                   >
                     {t(`fan.${speed}` as any)}
