@@ -61,7 +61,30 @@ This documentation package provides complete information about the Airo° Kelvo 
 
 ---
 
-### 4. **ARCHITECTURE.md** 🏗️
+### 4. **LVGL_INTEGRATION.md** 🔌
+**Start here if you need:** Gap analysis + status for porting this prototype to LVGL on ESP32-S3
+
+**Contents:**
+- ✅ Soft gaps closed: TYPOGRAPHY, ASSETS, STATE_BINDINGS produced
+- ❌ Remaining blockers: PIXEL_SPECS (must be measured), ANIMATIONS, PERFORMANCE
+- 📐 What firmware can start today without further docs
+
+**Best for:** Firmware engineers asking "can I build the LVGL UI from this prototype?"
+
+---
+
+### 5. **TYPOGRAPHY.md** 🅰️
+**Contents:** Inter + Outfit font plan, type scale (10–72 px), weight matrix, glyph subsets per language, LVGL `lv_font_t` declaration roadmap.
+
+### 6. **ASSETS.md** 🖼️
+**Contents:** All ~65 Lucide icons used (with sizes), custom SVG components, vendor protocol logos, background style export budget.
+
+### 7. **STATE_BINDINGS.md** 🔗
+**Contents:** Every `ControllerSettings` field — type, persist flag, read/write screen list. Suggested NVS namespace layout for ESP32-S3.
+
+---
+
+### 8. **ARCHITECTURE.md** 🏗️
 **Start here if you need:** Technical implementation details
 
 **Contents:**
