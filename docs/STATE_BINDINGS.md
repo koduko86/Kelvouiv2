@@ -38,7 +38,10 @@ Grouped by domain. **Persist** column = needs to survive reboot.
 | `tempStep` | `0.5\|1` | Yes | Home, Schedule, Settings | Settings |
 | `temperatureUnit` | `'celsius'\|'fahrenheit'` | Yes | Everywhere displaying temp | Settings |
 | `hysteresis` | `number` (0.5–3.0, step 0.5) | Yes | Settings (visualisation), bus | Settings |
-| `auxHeat` | `AuxHeatConfig` (11 sub-fields) | Yes | Settings, Aux logic | Settings → AuxHeatModal |
+| `auxHeat` | `AuxHeatConfig` (10 sub-fields) | Yes | Settings, Aux logic | Settings → AuxHeatModal |
+| `auxHeat.stage2Source` | derived `HeatSource` | Yes | — | Auto-set: opposite of `stage1Source` (VRF↔relay/"Aux Heat") |
+| `auxHeat.tempOffset` | `0.5\|1.0\|1.5\|2.0` °C | Yes | Aux logic | AuxHeatModal → Advanced |
+| ~~`auxHeat.circulateModeFan`~~ | removed 2026-05-06 | — | — | — |
 | `currentHumidity` | `number` | No (live) | Home, Weather | Sensor driver |
 
 ### Display & UX

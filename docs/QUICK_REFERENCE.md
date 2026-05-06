@@ -157,16 +157,15 @@ New feature (2026-05-04). Two-stage heating control with VRF + relay output.
   stage1Source: 'vrf' | 'relay';
   stage2Source: 'vrf' | 'relay';
   stage2Trigger: 'temp_or_time' | 'temp_and_time';
-  tempOffset: 0.5 | 1.0 | 1.5 | 2.0 | 2.5 | 3.0; // °C
+  tempOffset: 0.5 | 1.0 | 1.5 | 2.0; // °C (4 values; under Advanced)
   timeDelayMin: 5 | 10 | 15 | 30;
-  minOnTimeMin: 5 | 10 | 15 | 30;       // ≥ 10 recommended
-  fanDuringHeating: 'off' | 'stage1' | 'stage2' | 'both';
-  fanDelayOffMin: 0 | 5 | 10 | 15;
-  circulateModeFan: 'off' | 'low';
+  minOnTimeMin: 5 | 10 | 15 | 30;
+  fanDuringHeating: 'off' | 'stage1' | 'stage2' | 'both'; // under Advanced
+  fanDelayOffMin: 0 | 5 | 10 | 15;                         // under Advanced
 }
 ```
 
-UI: toggle row in Climate tab → "Configure" button opens `AuxHeatModal` (full-screen modal). Stage 2 fields hidden when `heatingMode === 'single'`. Default exported as `DEFAULT_AUX_HEAT` from `ControllerContext`.
+UI: toggle row in Climate tab → "Configure" button opens `AuxHeatModal` (full-screen modal). Stage 2 fields hidden when `heatingMode === 'single'`. **Secondary Heat Source is derived** — it's always the opposite of Primary (VRF↔Aux Heat) and rendered as a disabled segmented button. **Advanced Settings** is an expandable section grouping Temperature Offset, Fan During Heating, and Fan Delay Off. Source labels: VRF / Aux Heat. Default exported as `DEFAULT_AUX_HEAT` from `ControllerContext`. (`circulateModeFan` removed 2026-05-06.)
 
 ## 🚨 Critical Rules
 

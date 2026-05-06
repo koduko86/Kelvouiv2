@@ -1,5 +1,6 @@
-import { X, Flame, Layers, Zap, Thermometer, Timer, Fan as FanIcon, Wind } from 'lucide-react';
-import { useController, DEFAULT_AUX_HEAT, type AuxHeatConfig, type HeatSource, type HeatingMode, type Stage2Trigger, type FanDuringHeating, type CirculateModeFan } from '../context/ControllerContext';
+import { useEffect, useState } from 'react';
+import { X, Flame, Layers, Zap, Thermometer, Timer, Fan as FanIcon, ChevronDown } from 'lucide-react';
+import { useController, DEFAULT_AUX_HEAT, type AuxHeatConfig, type HeatSource, type HeatingMode, type Stage2Trigger, type FanDuringHeating } from '../context/ControllerContext';
 import { useTranslation } from '../context/i18n';
 
 interface Props {
@@ -12,9 +13,10 @@ interface SegProps<T extends string | number> {
   value: T;
   onChange: (v: T) => void;
   cols?: number;
+  disabled?: boolean;
 }
 
-function Seg<T extends string | number>({ options, value, onChange, cols }: SegProps<T>) {
+function Seg<T extends string | number>({ options, value, onChange, cols, disabled }: SegProps<T>) {
   const n = cols ?? options.length;
   const colsClass =
     n === 2 ? 'grid-cols-2'
@@ -29,12 +31,13 @@ function Seg<T extends string | number>({ options, value, onChange, cols }: SegP
         return (
           <button
             key={String(o.value)}
-            onClick={() => onChange(o.value)}
+            onClick={() => !disabled && onChange(o.value)}
+            disabled={disabled}
             className={`py-2 px-2 rounded-lg transition-all text-[11px] font-medium border ${
               active
                 ? 'bg-app-action/15 text-app-action border-app-action/40'
                 : 'bg-app-control text-app-text-sub border-app-line hover:bg-app-hover'
-            }`}
+            } ${disabled ? 'opacity-60 cursor-not-allowed' : ''}`}
           >
             {o.label}
           </button>
@@ -56,12 +59,24 @@ function Row({ icon: Icon, label, children }: { icon: any; label: string; childr
   );
 }
 
+const oppositeSource = (s: HeatSource): HeatSource => (s === 'vrf' ? 'relay' : 'vrf');
+
 export function AuxHeatModal({ open, onClose }: Props) {
   const { settings, updateSettings } = useController();
   const { t } = useTranslation();
-  if (!open) return null;
+  const [advancedOpen, setAdvancedOpen] = useState(false);
 
   const cfg = settings.auxHeat ?? DEFAULT_AUX_HEAT;
+  const derivedStage2: HeatSource = oppositeSource(cfg.stage1Source);
+
+  useEffect(() => {
+    if (cfg.stage2Source !== derivedStage2) {
+      updateSettings({ auxHeat: { ...cfg, stage2Source: derivedStage2 } });
+    }
+  }, [cfg, derivedStage2, updateSettings]);
+
+  if (!open) return null;
+
   const set = (patch: Partial<AuxHeatConfig>) =>
     updateSettings({ auxHeat: { ...cfg, ...patch } });
 
@@ -106,7 +121,9 @@ export function AuxHeatModal({ open, onClose }: Props) {
         <Row icon={Zap} label={t('aux.stage1_source' as any)}>
           <Seg<HeatSource>
             value={cfg.stage1Source}
-            onChange={(v) => set({ stage1Source: v })}
+            onChange={(v) =>
+              set({ stage1Source: v, stage2Source: oppositeSource(v) })
+            }
             options={sources}
           />
         </Row>
@@ -115,9 +132,10 @@ export function AuxHeatModal({ open, onClose }: Props) {
           <>
             <Row icon={Zap} label={t('aux.stage2_source' as any)}>
               <Seg<HeatSource>
-                value={cfg.stage2Source}
-                onChange={(v) => set({ stage2Source: v })}
+                value={derivedStage2}
+                onChange={() => {}}
                 options={sources}
+                disabled
               />
             </Row>
 
@@ -129,18 +147,6 @@ export function AuxHeatModal({ open, onClose }: Props) {
                   { value: 'temp_or_time', label: t('aux.trigger_or' as any) },
                   { value: 'temp_and_time', label: t('aux.trigger_and' as any) },
                 ]}
-              />
-            </Row>
-
-            <Row icon={Thermometer} label={t('aux.temp_offset' as any)}>
-              <Seg<number>
-                cols={6}
-                value={cfg.tempOffset}
-                onChange={(v) => set({ tempOffset: v })}
-                options={[0.5, 1.0, 1.5, 2.0, 2.5, 3.0].map((v) => ({
-                  value: v,
-                  label: `${v}°`,
-                }))}
               />
             </Row>
 
@@ -157,54 +163,85 @@ export function AuxHeatModal({ open, onClose }: Props) {
           </>
         )}
 
-        <Row icon={Timer} label={t('aux.min_on_time' as any)}>
+        <Row icon={Thermometer} label={t('aux.temp_offset' as any)}>
           <Seg<number>
-            value={cfg.minOnTimeMin}
-            onChange={(v) => set({ minOnTimeMin: v })}
-            options={[5, 10, 15, 30].map((v) => ({
+            cols={4}
+            value={cfg.tempOffset}
+            onChange={(v) => set({ tempOffset: v })}
+            options={[1.0, 2.0, 3.0, 4.0].map((v) => ({
               value: v,
-              label: `${v} ${t('aux.minutes_short' as any)}`,
+              label: `${v.toFixed(1)}°C`,
             }))}
           />
         </Row>
 
-        <Row icon={FanIcon} label={t('aux.fan_during_heating' as any)}>
-          <Seg<FanDuringHeating>
-            cols={2}
-            value={cfg.fanDuringHeating}
-            onChange={(v) => set({ fanDuringHeating: v })}
-            options={[
-              { value: 'off', label: t('aux.fan_off' as any) },
-              { value: 'stage1', label: t('aux.fan_s1' as any) },
-              { value: 'stage2', label: t('aux.fan_s2' as any) },
-              { value: 'both', label: t('aux.fan_both' as any) },
-            ]}
-          />
-        </Row>
+        {/* Advanced Settings (expandable) */}
+        <div className="bg-app-panel rounded-2xl overflow-hidden">
+          <button
+            onClick={() => setAdvancedOpen((v) => !v)}
+            className="w-full flex items-center gap-2.5 px-3 py-3 hover:bg-app-hover active:bg-app-hover transition-colors"
+          >
+            <div className="font-medium text-app-text text-sm flex-1 text-left">
+              {t('aux.advanced' as any)}
+            </div>
+            <ChevronDown
+              className={`w-4 h-4 text-app-text-sub transition-transform ${advancedOpen ? 'rotate-180' : ''}`}
+            />
+          </button>
+          {advancedOpen && (
+            <div className="px-3 pb-3 space-y-3 border-t border-app-line pt-3">
+              <div>
+                <div className="flex items-center gap-2.5 mb-2.5">
+                  <Timer className="w-4 h-4 text-app-text-sub" />
+                  <div className="font-medium text-app-text text-sm">{t('aux.min_on_time' as any)}</div>
+                </div>
+                <Seg<number>
+                  value={cfg.minOnTimeMin}
+                  onChange={(v) => set({ minOnTimeMin: v })}
+                  options={[5, 10, 15, 30].map((v) => ({
+                    value: v,
+                    label: `${v} ${t('aux.minutes_short' as any)}`,
+                  }))}
+                />
+              </div>
 
-        <Row icon={Timer} label={t('aux.fan_delay_off' as any)}>
-          <Seg<number>
-            value={cfg.fanDelayOffMin}
-            onChange={(v) => set({ fanDelayOffMin: v })}
-            options={[
-              { value: 0, label: t('aux.fan_off' as any) },
-              { value: 5, label: `5 ${t('aux.minutes_short' as any)}` },
-              { value: 10, label: `10 ${t('aux.minutes_short' as any)}` },
-              { value: 15, label: `15 ${t('aux.minutes_short' as any)}` },
-            ]}
-          />
-        </Row>
+              <div>
+                <div className="flex items-center gap-2.5 mb-2.5">
+                  <FanIcon className="w-4 h-4 text-app-text-sub" />
+                  <div className="font-medium text-app-text text-sm">{t('aux.fan_during_heating' as any)}</div>
+                </div>
+                <Seg<FanDuringHeating>
+                  cols={2}
+                  value={cfg.fanDuringHeating}
+                  onChange={(v) => set({ fanDuringHeating: v })}
+                  options={[
+                    { value: 'off', label: t('aux.fan_off' as any) },
+                    { value: 'stage1', label: t('aux.fan_s1' as any) },
+                    { value: 'stage2', label: t('aux.fan_s2' as any) },
+                    { value: 'both', label: t('aux.fan_both' as any) },
+                  ]}
+                />
+              </div>
 
-        <Row icon={Wind} label={t('aux.circulate_fan' as any)}>
-          <Seg<CirculateModeFan>
-            value={cfg.circulateModeFan}
-            onChange={(v) => set({ circulateModeFan: v })}
-            options={[
-              { value: 'off', label: t('aux.circulate_off' as any) },
-              { value: 'low', label: t('aux.circulate_low' as any) },
-            ]}
-          />
-        </Row>
+              <div>
+                <div className="flex items-center gap-2.5 mb-2.5">
+                  <Timer className="w-4 h-4 text-app-text-sub" />
+                  <div className="font-medium text-app-text text-sm">{t('aux.fan_delay_off' as any)}</div>
+                </div>
+                <Seg<number>
+                  value={cfg.fanDelayOffMin}
+                  onChange={(v) => set({ fanDelayOffMin: v })}
+                  options={[
+                    { value: 0, label: t('aux.fan_off' as any) },
+                    { value: 5, label: `5 ${t('aux.minutes_short' as any)}` },
+                    { value: 10, label: `10 ${t('aux.minutes_short' as any)}` },
+                    { value: 15, label: `15 ${t('aux.minutes_short' as any)}` },
+                  ]}
+                />
+              </div>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Footer */}
